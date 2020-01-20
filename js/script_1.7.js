@@ -5,8 +5,8 @@ Hilfe von: Patrik Keufen, Leander Schmidt, Sadie Schmidt, Jan Meininghaus
 
 let start = true;
 let grid = { x: 30, y: 20 }; // Canvas ist in einem Grid aufgebaut, um Schlange und Früchte immer auf einer Linie zu haben. Größes des Grids hängt vom Scale ab
-let head = { x: floor(grid.x / 2), y: floor(grid.y / 2), rotation: 0 }; // Kopf der Schlange
-let tail = [{ x: 0, y: 0 }]; // Schwanz der Schlange
+let head = { x: floor(grid.x / 2), y: floor(grid.y / 2), rot: 0 }; // Kopf der Schlange
+let tail = [{ x: 0, y: 0, rot: 0 }]; // Schwanz der Schlange
 let fruit = {
   x: floor(random(1, grid.x - 1)),
   y: floor(random(1, grid.y - 1)),
@@ -56,18 +56,42 @@ function field() {
 function snakeBody() {
   push();
   translate(head.x * scale, head.y * scale);
-  rotate(head.rotation);
+  rotate(head.rot);
   image(cathead, 0, 0, scale * 1.5, scale * 1.5);
   pop();
 
   fill(colorBlack);
   for (let i = 1; i < tail.length; i++) {
-    /*
+    // Letzter Teil des Schwanzes hat eine eigene Grafik
     if (i == tail.length - 1) {
-      image(cattail, tail[i - 1].x, tail[i - 1].y, scale * 1.5, scale * 1.5);
+      if (tail[i].x < tail[i - 1].x) {
+        push();
+        translate(tail[i].x * scale, tail[i].y * scale);
+        rotate((tail[i].rot = PI + HALF_PI));
+        image(cattail, 0, 0, scale * 1.5, scale * 1.5);
+        pop();
+      } else if (tail[i].x > tail[i - 1].x) {
+        push();
+        translate(tail[i].x * scale, tail[i].y * scale);
+        rotate((tail[i].rot = HALF_PI));
+        image(cattail, 0, 0, scale * 1.5, scale * 1.5);
+        pop();
+      } else if (tail[i].y < tail[i - 1].y) {
+        push();
+        translate(tail[i].x * scale, tail[i].y * scale);
+        rotate((tail[i].rot = 0));
+        image(cattail, 0, 0, scale * 1.5, scale * 1.5);
+        pop();
+      } else if (tail[i].y > tail[i - 1].y) {
+        push();
+        translate(tail[i].x * scale, tail[i].y * scale);
+        rotate((tail[i].rot = PI));
+        image(cattail, 0, 0, scale * 1.5, scale * 1.5);
+        pop();
+      }
+    } else {
+      rect(tail[i].x * scale, tail[i].y * scale, scale, scale);
     }
-    */
-    rect(tail[i].x * scale, tail[i].y * scale, scale, scale);
   }
 }
 
@@ -123,7 +147,7 @@ function snakeSpeed() {
 
       push();
       translate(head.x * scale, head.y * scale);
-      rotate((head.rotation = HALF_PI));
+      rotate((head.rot = HALF_PI));
       image(cathead, 0, 0, scale * 1.5, scale * 1.5);
       pop();
     }
@@ -133,7 +157,7 @@ function snakeSpeed() {
 
       push();
       translate(head.x * scale, head.y * scale);
-      rotate((head.rotation = PI + HALF_PI));
+      rotate((head.rot = PI + HALF_PI));
       image(cathead, 0, 0, scale * 1.5, scale * 1.5);
       pop();
     }
@@ -143,7 +167,7 @@ function snakeSpeed() {
 
       push();
       translate(head.x * scale, head.y * scale);
-      rotate((head.rotation = PI));
+      rotate((head.rot = PI));
       image(cathead, 0, 0, scale * 1.5, scale * 1.5);
       pop();
     }
@@ -153,7 +177,7 @@ function snakeSpeed() {
 
       push();
       translate(head.x * scale, head.y * scale);
-      rotate((head.rotation = 0));
+      rotate((head.rot = 0));
       image(cathead, 0, 0, scale * 1.5, scale * 1.5);
       pop();
     }
