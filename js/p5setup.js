@@ -19,7 +19,7 @@ function preload() {
 
 function setup() {
   createCanvas(grid.x * scale, grid.y * scale + 100);
-  frameRate(30);
+  frameRate(60);
 }
 
 window.addEventListener("resize", function() {
